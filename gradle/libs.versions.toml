@@ -1,0 +1,101 @@
+[versions]
+agp = "8.13.2"
+kotlin = "2.0.21"
+
+# Firebase
+firebaseBom = "33.7.0"
+
+# AndroidX
+coreKtx = "1.13.1"
+lifecycle = "2.8.6"
+activityCompose = "1.9.3"
+
+# Compose
+composeBom = "2024.10.00"
+navigationCompose = "2.8.4"
+
+# Network
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+
+# Coroutines
+coroutines = "1.9.0"
+
+# Image
+coil = "2.6.0"
+
+# ✅ Room (Caching)
+room = "2.6.1"
+
+# ✅ Datastore
+datastore = "1.1.0"
+
+# ✅ KSP Compiler Plugin
+ksp = "2.0.21-1.0.26"
+
+# Testing
+junit = "4.13.2"
+androidxJunit = "1.2.1"
+espresso = "3.6.1"
+
+
+
+[libraries]
+# Core
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
+
+# Compose
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+
+# Network
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+
+# Coroutines
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+
+# Image loading
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
+# ✅ Room Database (24hr Cache)
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+# ✅ Datastore Preferences (Cache Timestamp)
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+
+# Testing
+junit = { module = "junit:junit", version.ref = "junit" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+# ✅ ADD THIS FOR ROOM COMPILER
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
