@@ -107,5 +107,5 @@ fun DetailScreenUI(movie: MovieDetailsDto) {
         }
 
     }
-
+//Apple
 }
