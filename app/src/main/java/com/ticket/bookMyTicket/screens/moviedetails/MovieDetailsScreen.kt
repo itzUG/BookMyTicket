@@ -1,6 +1,7 @@
 package com.ticket.bookMyTicket.screens.moviedetails
 
 import android.util.Log
+import android.widget.Button
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -43,7 +45,6 @@ fun MovieDetailsScreen(
             .background(Color.Black.copy(alpha = 1f))
     ) {
         MovieDetailsLazyScreen(navController,movieId,movieDetailsUIState)
-
     }
 }
 
@@ -64,13 +65,13 @@ fun MovieDetailsLazyScreen(
         }
         is MovieDetailsFetchingUiState.Success -> {
             val movie = movieDetailsState.movieDetails
-            DetailScreenUI(movie)
+            DetailScreenUI(movie , navController)
         }
     }
 }
 
 @Composable
-fun DetailScreenUI(movie: MovieDetailsDto) {
+fun DetailScreenUI(movie: MovieDetailsDto , navController: NavController) {
 
     Log.d("POPULAR", "Movies: ${movie.credits}")
 
@@ -103,6 +104,15 @@ fun DetailScreenUI(movie: MovieDetailsDto) {
                     VideoSectionModern(videos)
                 }
             }
+
+            androidx.compose.material3.Button(
+                onClick = {
+                    navController.navigate("booking/${movie.id}")
+                }
+            ) {
+                Text("Book Now")
+            }
+
             Spacer(modifier = Modifier.padding(bottom = 80.dp))
         }
 

@@ -5,7 +5,7 @@ object Routes {
     const val HOME = "home/"
     const val DETAILS = "details/"
 
-    const val CINEMA = "cinema/{movieId}"
+    const val CINEMA = "booking/"
     const val TIME = "time/{movieId}/{cinemaId}"
     const val SEATS = "seats/{showId}"
     const val SUMMARY = "summary"

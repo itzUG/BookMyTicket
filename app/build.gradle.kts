@@ -2,9 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-
-    // ✅ ADD THIS (Room needs compiler)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -73,16 +71,6 @@ dependencies {
     // ---------------- IMAGE LOADING ----------------
     implementation(libs.coil.compose)
 
-    // ---------------- ✅ ROOM DATABASE (Caching) ----------------
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-
-    // ⚡ Room Compiler (KSP)
-    ksp(libs.room.compiler)
-
-    // ---------------- ✅ DATASTORE (Optional Cache Timestamp) ----------------
-    implementation(libs.datastore.preferences)
-
     // ---------------- TESTING ----------------
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -93,8 +81,12 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // ---------------- FIREBASE ----------------
+    // Firebase BOM
     implementation(platform(libs.firebase.bom))
+
+    // Firebase services
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:13.0.0")
 }
