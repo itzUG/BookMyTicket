@@ -25,11 +25,16 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
+import com.ticket.bookMyTicket.data.db.BookedTicketEntity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 // ── Design tokens (matches app theme) ─────────────────────────────────────────
 private val BgDeep      = Color(0xFF080810)
@@ -53,12 +58,29 @@ fun PaymentScreen(
 ) {
     var isProcessing by remember { mutableStateOf(false) }
     var isDone       by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     // Navigate after success animation
     if (isProcessing) {
         LaunchedEffect(Unit) {
             delay(2200)
             isDone = true
+            delay(600)
+
+            val db = DatabaseProvider.getDatabase(context)
+            val dao = db.bookedTicketDao()
+
+            withContext(Dispatchers.IO) {
+                dao.insertTicket(
+                    BookedTicketEntity(
+                        movieId = movieId,
+                        theatreId = theatreId,
+                        showTime = showTime,
+                        seats = seats.joinToString(","),
+                        amount = amount
+                    )
+                )
+            }
             delay(600)
             navController.navigate(
                 "ticket_confirm/$amount/${seats.joinToString(",")}/$movieId/$theatreId/$showTime"

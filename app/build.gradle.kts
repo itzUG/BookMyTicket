@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
+    id("kotlin-kapt")
 }
 
 android {
@@ -89,4 +90,11 @@ dependencies {
     implementation(libs.firebase.firestore)
 
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:13.0.0")
+
+    //Room Database
+
+    // Room Database (FIXED)
+    implementation("androidx.room:room-runtime:2.8.4")
+    implementation("androidx.room:room-ktx:2.8.4")
+    kapt("androidx.room:room-compiler:2.8.4")
 }
