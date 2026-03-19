@@ -388,6 +388,9 @@ fun SeatSelectionScreen(
                         Button(
                             onClick = {
                                 println("Booking seats: $selectedSeats")
+                                navController.navigate(
+                                    "payment/$movieId/$theatreId/$showTime/$totalPrice/${selectedSeats.joinToString(",")}"
+                                )
                                 // navController.navigate("payment")
                             },
                             shape = RoundedCornerShape(16.dp),

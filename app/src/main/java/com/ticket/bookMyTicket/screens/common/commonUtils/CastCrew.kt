@@ -2,6 +2,7 @@ package com.ticket.bookMyTicket.screens.common.commonUtils
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -17,143 +18,118 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.ticket.bookMyTicket.data.remote.tmdb.dto.CastDto
 import com.ticket.bookMyTicket.data.remote.tmdb.dto.CrewDto
 
-// ─────────────────────────────────────────────
-// ✅ Modern Section Heading
-// ─────────────────────────────────────────────
+private val BgCard      = Color(0xFF111120)
+private val TextPrimary = Color(0xFFF0F0FF)
+private val TextMuted   = Color(0xFF7070A0)
+private val GlassBorder = Color.White.copy(alpha = 0.10f)
 
-@Composable
-fun SectionHeading(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleLarge.copy(
-            fontWeight = FontWeight.SemiBold
-        ),
-        color = Color.White,
-        modifier = Modifier
-            .padding(horizontal = 18.dp, vertical = 14.dp)
-    )
-}
+private const val TMDB_PROFILE = "https://image.tmdb.org/t/p/w185"
 
-// ─────────────────────────────────────────────
-// ✅ Modern Cast Section
-// ─────────────────────────────────────────────
-
+// ── Cast Section ───────────────────────────────────────────────────────────────
 @Composable
 fun CastCrew(casts: List<CastDto>) {
-
     if (casts.isEmpty()) return
 
-    Column {
-
-        SectionHeading("Top Cast")
-
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 18.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp)
-        ) {
-            items(casts.take(15), key = { it.id }) { cast ->
-                PersonCard(
-                    name = cast.name,
-                    role = cast.character,
-                    imagePath = cast.profile_path
-                )
-            }
+    LazyRow(
+        // 20dp start aligns with screen content; 20dp end so last card fully scrolls into view
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.fillMaxWidth()   // ← fills full screen width, no clipping
+    ) {
+        items(casts.take(15), key = { it.id }) { cast ->
+            PersonCard(
+                name      = cast.name,
+                role      = cast.character,
+                imagePath = cast.profile_path
+            )
         }
     }
 }
 
-// ─────────────────────────────────────────────
-// ✅ Modern Crew Section
-// ─────────────────────────────────────────────
-
+// ── Crew Section ───────────────────────────────────────────────────────────────
 @Composable
 fun CrewSection(crew: List<CrewDto>) {
-
     if (crew.isEmpty()) return
 
-    Column {
-
-        SectionHeading("Crew")
-
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 18.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp)
-        ) {
-            items(crew.take(15), key = { it.id }) { member ->
-                PersonCard(
-                    name = member.name,
-                    role = member.job,
-                    imagePath = member.profile_path
-                )
-            }
+    LazyRow(
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(crew.take(15), key = { it.id }) { member ->
+            PersonCard(
+                name      = member.name,
+                role      = member.job,
+                imagePath = member.profile_path
+            )
         }
     }
 }
 
-// ─────────────────────────────────────────────
-// ✅ Reusable Modern Person Card
-// ─────────────────────────────────────────────
-
+// ── Person Card ────────────────────────────────────────────────────────────────
 @Composable
 fun PersonCard(
     name: String,
     role: String,
     imagePath: String?
 ) {
-
-    val imagePrefix = "https://image.tmdb.org/t/p/w500"
-
     Column(
-        modifier = Modifier.width(92.dp),
+        modifier = Modifier.width(86.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        // ✅ Profile Image with Border + Shadow Look
-        Surface(
-            shape = CircleShape,
-            border = BorderStroke(
-                1.dp,
-                Color.White.copy(alpha = 0.15f)
-            ),
-            color = Color.DarkGray.copy(alpha = 0.35f),
-            modifier = Modifier.size(78.dp)
+        // Profile image
+        Box(
+            modifier = Modifier
+                .size(76.dp)
+                .clip(CircleShape)
+                .background(Color(0xFF1A1A30))
+                .border(1.dp, GlassBorder, CircleShape)
         ) {
-            AsyncImage(
-                model = if (imagePath != null)
-                    "$imagePrefix$imagePath"
-                else null,
-                contentDescription = name,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
+            if (imagePath != null) {
+                AsyncImage(
+                    model = "$TMDB_PROFILE$imagePath",
+                    contentDescription = name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape)
+                )
+            } else {
+                // Initials fallback
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        text = name.firstOrNull()?.uppercase() ?: "?",
+                        color = TextPrimary,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(Modifier.height(8.dp))
 
-        // ✅ Name
         Text(
             text = name,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Medium
-            ),
-            color = Color.White,
+            color = TextPrimary,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-
-        Spacer(modifier = Modifier.height(2.dp))
-
-        // ✅ Role (Character / Job)
+        Spacer(Modifier.height(2.dp))
         Text(
             text = role,
-            style = MaterialTheme.typography.labelSmall,
-            color = Color.White.copy(alpha = 0.55f),
+            color = TextMuted,
+            fontSize = 10.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
